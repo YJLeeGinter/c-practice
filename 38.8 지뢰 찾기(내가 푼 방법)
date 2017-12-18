@@ -1,0 +1,82 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main()
+{
+    int row, col;
+    scanf("%d %d", &row, &col);
+
+    char **m = malloc(sizeof(char *)*(row+2)); // 행과 열을 2줄씩 더 추가하고 거기에 다 0을 넣는다. 해당 원소를 기준으로 8번을 돌아 별표의 개수를 저장한다.
+    for (int i = 0; i<(row+2); i++)
+    {
+        m[i] = malloc(sizeof(char)*col+2); // 열 메모리 할당. 문자열을 사용할 것을 유념하기
+        memset(m[i], 0, sizeof(char)*col + 2); // 행렬을 0으로 초기화
+    }
+
+
+  
+    for (int i = 1; i<(row+1); i++)
+    {       
+            scanf("%s", m[i]+1); // 첫번째 열은 사용 안 할 것이므로 두번째 열부터 문자열을 넣는다.
+       
+    }
+
+    int count =0; // 인근 *의 개수를 저장하고 출력할 변수
+
+    for (int i = 1; i<(row+1); i++) // 첫 행과 첫 열은 제외할 것이라서 1부터 시작
+    {
+        for (int j = 1; j<(col+1); j++) // 첫 행과 첫 열은 제외할 것이라서 1부터 시작
+        {
+            if(m[i][j]=='*') // *일 경우 *을 출력
+                printf("%c",m[i][j]);
+
+            else if (m[i][j] != '*') // *이 아닐 경우 해당 행렬을 중심으로 상하좌우 8번을 돌아 *이 있는지 확인하고 그 개수를 저장
+            {
+                if (m[i][j - 1] == '*')
+                    count += 1;
+
+                if (m[i-1][j - 1] == '*')
+                    count += 1;
+
+                if (m[i-1][j] == '*')
+                    count += 1;
+
+                if (m[i-1][j+1] == '*')
+                    count += 1;
+
+                if (m[i][j+1] == '*')
+                    count += 1;
+
+                if (m[i+1][j +1] == '*')
+                    count += 1;
+
+                if (m[i+1][j] == '*')
+                    count += 1;
+
+                if (m[i+1][j -1] == '*')
+                    count += 1;
+                                      
+                printf("%d", count);
+
+                count = 0; // 다음 원소를 위해 초기화
+               
+               
+            }
+           
+        }
+
+        printf("\n"); // 행을 구분해 줌
+
+    }
+
+    for (int i = 0; i < (row + 2); i++) // 행에서 열을 가리키는 포인터 메모리 해제
+    {
+        free(m[i]);
+    }
+
+    free(m);
+
+    return 0;
+}
