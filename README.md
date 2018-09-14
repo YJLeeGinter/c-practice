@@ -1,1 +1,1 @@
-# c-practice
+# to practice C programming
